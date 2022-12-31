@@ -36,7 +36,12 @@ const run = async () => {
       res.send(product);
     });
 
-    app.get('/products/categories', async (req, res) => {
+    app.get('/products/category/:category', async(req,res)=>{
+      const category = req.params.category;
+      const categoryProducts = await productsCollection.find()
+    })
+
+    app.get('/categories', async (req, res) => {
       const categories = await categoriesCollection.find({}).toArray();
       res.send(categories);
     });
@@ -46,8 +51,6 @@ const run = async () => {
 
 run().catch(err => console.error(err));
 
-app.get('/', async (req, res) => {
-  res.send('<h1>Kinun server is running</h1>');
-});
+app.get('/', async (req, res) => res.send('<h1>Kinun server is running</h1>'));
 
 app.listen(port, () => console.log(`Kinun server is running on port:${port}`));
