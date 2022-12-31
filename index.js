@@ -1,7 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const {
+  MongoClient,
+  ServerApiVersion,
+  ObjectId,
+  ClientSession,
+} = require('mongodb');
 
 const port = process.env.PORT || 5000;
 
@@ -36,10 +41,15 @@ const run = async () => {
       res.send(product);
     });
 
-    app.get('/products/category/:category', async(req,res)=>{
+    app.get('/products/category/:category', async (req, res) => {
       const category = req.params.category;
-      const categoryProducts = await productsCollection.find()
-    })
+      const categoryProducts = await productsCollection
+        .find({
+          category: { $eq: category },
+        })
+        .toArray();
+      res.send(categoryProducts);
+    });
 
     app.get('/categories', async (req, res) => {
       const categories = await categoriesCollection.find({}).toArray();
