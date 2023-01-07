@@ -28,10 +28,14 @@ const run = async () => {
     const productsCollection = client.db('kinun').collection('products');
     const categoriesCollection = client.db('kinun').collection('categories');
 
+    // get products
+
     app.get('/products', async (req, res) => {
       const products = await productsCollection.find({}).toArray();
       res.send(products);
     });
+
+    // get single product by id
 
     app.get('/products/:id', async (req, res) => {
       const id = req.params.id;
@@ -40,6 +44,8 @@ const run = async () => {
       });
       res.send(product);
     });
+
+    // get products by category
 
     app.get('/products/category/:category', async (req, res) => {
       const category = req.params.category;
@@ -50,6 +56,8 @@ const run = async () => {
         .toArray();
       res.send(categoryProducts);
     });
+
+    // get categories
 
     app.get('/categories', async (req, res) => {
       const categories = await categoriesCollection.find({}).toArray();
