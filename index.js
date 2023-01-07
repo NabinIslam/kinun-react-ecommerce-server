@@ -28,7 +28,7 @@ const run = async () => {
     const productsCollection = client.db('kinun').collection('products');
     const categoriesCollection = client.db('kinun').collection('categories');
 
-    // get products
+    // get all products
 
     app.get('/products', async (req, res) => {
       const products = await productsCollection.find({}).toArray();
