@@ -12,6 +12,8 @@ const {
 const emailWithNodeMailer = require('../helper/email');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const checkUserExists = require('../helper/checkUserExists');
+const sendEmail = require('../helper/sendEmail');
 
 const handleGetUsers = async (req, res, next) => {
   try {
@@ -103,11 +105,11 @@ const handleProcessRegister = async (req, res, next) => {
 
     const imageBufferString = image.buffer.toString('base64');
 
-    const userExists = await User.exists({ email: email });
+    const userExists = await checkUserExists(email);
     if (userExists) {
       throw createError(
         409,
-        'User with this email already exist. Please signin'
+        'User with this email already exist. Please sign in'
       );
     }
 
@@ -128,13 +130,8 @@ const handleProcessRegister = async (req, res, next) => {
       `,
     };
 
-    //send email with nodemail
-    try {
-      await emailWithNodeMailer(emailData);
-    } catch (emailError) {
-      next(createError(500, 'Failed to send varification email'));
-      return;
-    }
+    //send email with nodemailer
+    sendEmail(emailData);
 
     return successResponse(res, {
       statusCode: 200,
@@ -354,17 +351,12 @@ const handleForgetPassword = async (req, res, next) => {
         `,
     };
 
-    //send email with nodemail
-    try {
-      await emailWithNodeMailer(emailData);
-    } catch (emailError) {
-      next(createError(500, 'Failed to send reset password email'));
-      return;
-    }
+    //send email with nodemailer
+    sendEmail(emailData);
 
     return successResponse(res, {
       statusCode: 200,
-      message: `Please go to your ${email} inbox for reseting your password`,
+      message: `Please go to your ${email} inbox to reset your password`,
       payload: { token },
     });
   } catch (error) {
