@@ -5,6 +5,7 @@ const seedRouter = require('./routers/seedRouter');
 const userRouter = require('./routers/userRouter');
 const { errorResponse } = require('./controllers/responseController');
 const authRouter = require('./routers/authRouter');
+const categoryRouter = require('./routers/categoryRouter');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/seed', seedRouter);
+app.use('/api/categories', categoryRouter);
 
 app.get('/', (req, res) => res.send('Server is running fine! YaY!'));
 
