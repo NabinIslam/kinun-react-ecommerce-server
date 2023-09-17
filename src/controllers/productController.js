@@ -52,21 +52,13 @@ const handleGetProducts = async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 4;
 
-
-
-
-
-
-
     const searchRegExp = new RegExp('.*' + search + '.*', 'i');
 
     const filter = {
-      $or: [
-        { name: { $regex: searchRegExp } },
-      ],
+      $or: [{ name: { $regex: searchRegExp } }],
     };
 
-    const productsData = await getProducts(page, limit,filter);
+    const productsData = await getProducts(page, limit, filter);
 
     return successResponse(res, {
       statusCode: 200,
