@@ -10,11 +10,11 @@ const logger = createLogger({
   ),
   transports: [
     new transports.File({
-      filename: 'src/logs/info.log',
+      filename: '/src/logs/info.log',
       level: 'info',
     }),
     new transports.File({
-      filename: 'src/logs/error.log',
+      filename: '/src/logs/error.log',
       level: 'error',
     }),
     // new transports.Console({
