@@ -121,8 +121,6 @@ const validateUserResetPassword = [
     ),
 ];
 
-
-
 // sign in validations
 
 module.exports = {
