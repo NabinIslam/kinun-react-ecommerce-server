@@ -15,8 +15,8 @@ const categoryRouter = express.Router();
 
 categoryRouter.post(
   '/',
-  validateCategory,
-  runValidations,
+  // validateCategory,
+  // runValidations,
   // isLoggedIn,
   // isAdmin,
   handleCreateCategory
@@ -26,8 +26,8 @@ categoryRouter.get('/', handleGetCategories);
 categoryRouter.get('/:slug', handleGetCategory);
 categoryRouter.put(
   '/:slug',
-  validateCategory,
-  runValidations,
+  // validateCategory,
+  // runValidations,
   // isLoggedIn,
   // isAdmin,
   handleUpdateCategory
