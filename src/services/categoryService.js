@@ -11,13 +11,10 @@ const createCategory = async name => {
   return newCategory;
 };
 
-const getCategories = async () => {
-  return await Category.find({}).select('name slug').lean();
-};
+const getCategories = async () => await Category.find({});
 
-const getCategory = async slug => {
-  return await Category.find({ slug }).select('name slug').lean();
-};
+const getCategory = async slug =>
+  await Category.find({ slug }).select('name slug').lean();
 
 const updateCategory = async (name, slug) => {
   const updateCategory = await Category.findOneAndUpdate(
@@ -29,9 +26,7 @@ const updateCategory = async (name, slug) => {
   return updateCategory;
 };
 
-const deleteCategory = async slug => {
-  return await Category.findOneAndDelete({ slug });
-};
+const deleteCategory = async slug => await Category.findOneAndDelete({ slug });
 
 module.exports = {
   createCategory,
