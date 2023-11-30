@@ -20,8 +20,8 @@ productRouter.post(
   upload.single('image'),
   validateProduct,
   runValidations,
-  isLoggedIn,
-  isAdmin,
+  // isLoggedIn,
+  // isAdmin,
   handleCreateProduct
 );
 
@@ -30,13 +30,18 @@ productRouter.get('/', handleGetProducts);
 // GET -> /api/products/:slug -> get single product
 productRouter.get('/:slug', handleGetProduct);
 
-productRouter.delete('/:slug', isLoggedIn, isAdmin, handleDeleteProduct);
+productRouter.delete(
+  '/:slug',
+  // isLoggedIn,
+  // isAdmin,
+  handleDeleteProduct
+);
 
 productRouter.put(
   '/:slug',
   upload.single('image'),
-  isLoggedIn,
-  isAdmin,
+  // isLoggedIn,
+  // isAdmin,
   handleUpdateProduct
 );
 
