@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { mongodbUri } = require('../secret');
-const logger = require('../controllers/loggerController');
+// const logger = require('../controllers/loggerController');
 
 const connectDB = async options => {
   try {
@@ -11,7 +11,7 @@ const connectDB = async options => {
       console.error(`DB connection error: ${err}`)
     );
   } catch (error) {
-    console.error(`Could not connect to Mongo ${error.toString()}`);
+    console.error(`Could not connect to Mongo ${error}`);
   }
 };
 
