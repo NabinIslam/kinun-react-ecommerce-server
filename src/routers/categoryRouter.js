@@ -17,8 +17,8 @@ categoryRouter.post(
   '/',
   validateCategory,
   runValidations,
-  isLoggedIn,
-  isAdmin,
+  // isLoggedIn,
+  // isAdmin,
   handleCreateCategory
 );
 
@@ -28,10 +28,14 @@ categoryRouter.put(
   '/:slug',
   validateCategory,
   runValidations,
-  isLoggedIn,
-  isAdmin,
+  // isLoggedIn,
+  // isAdmin,
   handleUpdateCategory
 );
-categoryRouter.delete('/:slug', isLoggedIn, isAdmin, handleDeleteCategory);
+categoryRouter.delete(
+  '/:slug',
+  // isLoggedIn, isAdmin,
+  handleDeleteCategory
+);
 
 module.exports = categoryRouter;
