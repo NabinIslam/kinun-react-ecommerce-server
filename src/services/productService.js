@@ -4,15 +4,7 @@ const createError = require('http-errors');
 const Product = require('../models/productModel');
 
 const createProduct = async productData => {
-  const {
-    name,
-    description,
-    price,
-    quantity,
-    shipping,
-    category,
-    imageBufferString,
-  } = productData;
+  const { name, description, price, image, category, status } = productData;
 
   const productExists = await Product.exists({ name: name });
 
@@ -25,10 +17,9 @@ const createProduct = async productData => {
     slug: slugify(name),
     description,
     price,
-    quantity,
-    shipping,
-    image: imageBufferString,
+    image,
     category,
+    status,
   });
 
   return product;
@@ -52,7 +43,6 @@ const getProducts = async (page = 1, limit = 4, filter = {}) => {
     currentPage: page,
     previousPage: page - 1,
     nextPage: page + 1,
-    
   };
 };
 

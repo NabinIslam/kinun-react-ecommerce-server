@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const bcrypt = require('bcryptjs');
 
 // name, slug, description, price, quantity, sold, shipping, image
 const productSchema = new Schema(
@@ -34,26 +33,6 @@ const productSchema = new Schema(
           `${props.value} is not a valid price! Price must be greater than 0`,
       },
     },
-    quantity: {
-      type: Number,
-      required: [true, 'Product quantity is required'],
-      trim: true,
-      validate: {
-        validator: v => v > 0,
-        message: props =>
-          `${props.value} is not a valid quantity! quantity must be greater than 0`,
-      },
-    },
-    sold: {
-      type: Number,
-      required: [true, 'Sold quantity is required'],
-      trim: true,
-      default: 0,
-    },
-    shipping: {
-      type: Number,
-      default: 0,
-    },
     image: {
       type: String,
       required: [true, 'Product image is required'],
@@ -63,6 +42,10 @@ const productSchema = new Schema(
       ref: 'Category',
       required: true,
     },
+    status: {
+      type: String,
+      required: [true, 'Product status is required'],
+    }
   },
   { timestamps: true }
 );
