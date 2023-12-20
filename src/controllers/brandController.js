@@ -1,22 +1,18 @@
-const {
-  createBrand,
-  getBrands,
-  getBrand,
-  updateBrand,
-  deleteBrand,
-} = require('../services/brandService');
-const { successResponse } = require('./responseController');
-const createError = require('http-errors');
+const Brand = require('../models/brandModel');
+const slugify = require('slugify');
 
 const handleCreateBrand = async (req, res, next) => {
   try {
     const { name } = req.body;
 
-    await createBrand(name);
+    const brand = await Brand.create({
+      name: name,
+      slug: slugify(name),
+    });
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Brand created successfully`,
+      brand,
     });
   } catch (error) {
     next(error);
@@ -25,12 +21,11 @@ const handleCreateBrand = async (req, res, next) => {
 
 const handleGetBrands = async (req, res, next) => {
   try {
-    const brands = await getBrands();
+    const brands = await Brand.find({});
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Brands fetched successfully`,
-      payload: brands,
+      brands,
     });
   } catch (error) {
     next(error);
@@ -41,16 +36,16 @@ const handleGetBrand = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const brand = await getBrand(slug);
+    const brand = await Brand.find({ slug });
 
-    if (!brand) {
-      throw createError(404, 'Brand not found');
-    }
+    if (!brand)
+      return res.status(404).json({
+        message: `Brand not found`,
+      });
 
-    return successResponse(res, {
-      statusCode: 200,
-      message: `Categories fetched successfully`,
-      payload: brand,
+    return res.status(200).json({
+      message: `Brand fetched successfully`,
+      brand,
     });
   } catch (error) {
     next(error);
@@ -62,16 +57,20 @@ const handleUpdateBrand = async (req, res, next) => {
     const { name } = req.body;
     const { slug } = req.params;
 
-    const updatedBrand = await updateBrand(name, slug);
+    const updatedBrand = await Brand.findOneAndUpdate(
+      { slug },
+      { $set: { name: name, slug: slugify(name) } },
+      { new: true }
+    );
 
-    if (!updatedBrand) {
-      throw createError(404, 'Brand not found');
-    }
+    if (!updatedBrand)
+      return res.status(404).json({
+        message: `Brand not found`,
+      });
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Brand updated successfully`,
-      payload: updatedBrand,
+      updatedBrand,
     });
   } catch (error) {
     next(error);
@@ -82,14 +81,14 @@ const handleDeleteBrand = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const result = await deleteBrand(slug);
+    const result = await Brand.findOneAndDelete({ slug });
 
-    if (!result) {
-      throw createError(404, 'Brand not found');
-    }
+    if (!result)
+      return res.status(404).json({
+        message: `Brand not found`,
+      });
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Brand deleted successfully`,
     });
   } catch (error) {

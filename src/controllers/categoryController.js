@@ -1,22 +1,18 @@
-const { successResponse } = require('./responseController');
-const {
-  createCategory,
-  getCategories,
-  getCategory,
-  updateCategory,
-  deleteCategory,
-} = require('../services/categoryService');
-const createError = require('http-errors');
+const slugify = require('slugify');
+const Category = require('../models/categoryModel');
 
 const handleCreateCategory = async (req, res, next) => {
   try {
     const { name } = req.body;
 
-    await createCategory(name);
+    const newCategory = await Category.create({
+      name: name,
+      slug: slugify(name),
+    });
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Category created successfully`,
+      newCategory,
     });
   } catch (error) {
     next(error);
@@ -25,12 +21,11 @@ const handleCreateCategory = async (req, res, next) => {
 
 const handleGetCategories = async (req, res, next) => {
   try {
-    const categories = await getCategories();
+    const categories = await Category.find({});
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Categories fetched successfully`,
-      payload: categories,
+      categories,
     });
   } catch (error) {
     next(error);
@@ -41,16 +36,16 @@ const handleGetCategory = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const category = await getCategory(slug);
+    const category = await Category.find({ slug });
 
-    if (!category) {
-      throw createError(404, 'Category not found');
-    }
+    if (!category)
+      return res.status(404).json({
+        message: `Category not found`,
+      });
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Categories fetched successfully`,
-      payload: category,
+      category,
     });
   } catch (error) {
     next(error);
@@ -62,16 +57,20 @@ const handleUpdateCategory = async (req, res, next) => {
     const { name } = req.body;
     const { slug } = req.params;
 
-    const updatedCategory = await updateCategory(name, slug);
+    const updatedCategory = await Category.findOneAndUpdate(
+      { slug },
+      { $set: { name: name, slug: slugify(name) } },
+      { new: true }
+    );
 
-    if (!updatedCategory) {
-      throw createError(404, 'Category not found');
-    }
+    if (!updatedCategory)
+      return res.status(404).json({
+        message: `Category not found`,
+      });
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Category updated successfully`,
-      payload: updatedCategory,
+      updatedCategory,
     });
   } catch (error) {
     next(error);
@@ -82,14 +81,14 @@ const handleDeleteCategory = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const result = await deleteCategory(slug);
+    const result = await Category.findOneAndDelete({ slug });
 
-    if (!result) {
-      throw createError(404, 'Category not found');
-    }
+    if (!result)
+      return res.status(404).json({
+        message: `Category not found`,
+      });
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Category deleted successfully`,
     });
   } catch (error) {

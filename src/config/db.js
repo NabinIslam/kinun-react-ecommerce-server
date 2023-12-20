@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const { mongodbUri } = require('../secret');
-// const logger = require('../controllers/loggerController');
+require('dotenv').config();
+
+const mongodbUri = process.env.MONGODB_URI;
 
 const connectDB = async options => {
   try {

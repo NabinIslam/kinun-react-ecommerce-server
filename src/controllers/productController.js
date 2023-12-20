@@ -1,32 +1,31 @@
-const createError = require('http-errors');
-const { successResponse } = require('./responseController');
-const {
-  createProduct,
-  getProducts,
-  getProduct,
-  deleteProduct,
-  updateProduct,
-} = require('../services/productService');
+const slugify = require('slugify');
+const { updateProduct } = require('../services/productService');
+const Product = require('../models/productModel');
 
 const handleCreateProduct = async (req, res, next) => {
   try {
     const { name, description, price, image, category, status } = req.body;
 
-    const productData = {
+    const productExists = await Product.exists({ name: name });
+
+    if (productExists)
+      return res
+        .status(409)
+        .json({ message: `Product with this name already exist.` });
+
+    const product = await Product.create({
       name,
+      slug: slugify(name),
       description,
       price,
       image,
       category,
       status,
-    };
+    });
 
-    const product = await createProduct(productData);
-
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Product created successfully`,
-      payload: product,
+      product,
     });
   } catch (error) {
     next(error);
@@ -35,31 +34,11 @@ const handleCreateProduct = async (req, res, next) => {
 
 const handleGetProducts = async (req, res, next) => {
   try {
-    const search = req.query.search || '';
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 4;
+    const products = await Product.find({});
 
-    const searchRegExp = new RegExp('.*' + search + '.*', 'i');
-
-    const filter = {
-      $or: [{ name: { $regex: searchRegExp } }],
-    };
-
-    const productsData = await getProducts(page, limit, filter);
-
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: `Returned all products successfully`,
-      payload: {
-        products: productsData.products,
-        pagination: {
-          totalPages: productsData.totalPages,
-          currentPage: productsData.currentPage,
-          previousPage: productsData.currentPage - 1,
-          nextPage: productsData.currentPage + 1,
-          totalNumberOfProducts: productsData.count,
-        },
-      },
+      products,
     });
   } catch (error) {
     next(error);
@@ -70,12 +49,16 @@ const handleGetProduct = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const product = await getProduct(slug);
+    const product = await Product.findOne({ slug }).populate('category');
 
-    return successResponse(res, {
-      statusCode: 200,
+    if (!product)
+      return res.status(404).json({
+        message: 'Product not found',
+      });
+
+    return res.status(200).json({
       message: `Returned a single product successfully`,
-      payload: product,
+      product,
     });
   } catch (error) {
     next(error);
@@ -86,10 +69,14 @@ const handleDeleteProduct = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const product = await deleteProduct(slug);
+    const product = await Product.findOneAndDelete({ slug });
 
-    return successResponse(res, {
-      statusCode: 200,
+    if (!product)
+      return res.status(404).json({
+        message: `Product not found`,
+      });
+
+    return res.status(200).json({
       message: `Deleted a single product successfully`,
     });
   } catch (error) {
@@ -136,8 +123,7 @@ const handleUpdateProduct = async (req, res, next) => {
       updateOptions
     );
 
-    return successResponse(res, {
-      statusCode: 200,
+    return res.status(200).json({
       message: 'Product has updated successfully',
       payload: updatedProduct,
     });

@@ -10,7 +10,6 @@ const {
 const categoryRouter = express.Router();
 
 categoryRouter.post('/', handleCreateCategory);
-
 categoryRouter.get('/', handleGetCategories);
 categoryRouter.get('/:slug', handleGetCategory);
 categoryRouter.put('/:slug', handleUpdateCategory);
