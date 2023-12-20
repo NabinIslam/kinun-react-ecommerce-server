@@ -5,7 +5,11 @@ const connectDB = async options => {
   try {
     const mongodbUri = process.env.MONGODB_URI;
 
-    await mongoose.connect(mongodbUri, options);
+    await mongoose.connect(
+      mongodbUri,
+      { useNewUrlParser: 'true', useUnifiedTopology: 'true' },
+      options
+    );
     console.log('Database connection established');
 
     mongoose.connection.on('error', err =>
