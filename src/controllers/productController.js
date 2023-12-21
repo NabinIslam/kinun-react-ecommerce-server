@@ -1,5 +1,4 @@
 const slugify = require('slugify');
-const { updateProduct } = require('../services/productService');
 const Product = require('../models/productModel');
 
 const handleCreateProduct = async (req, res, next) => {
@@ -34,7 +33,7 @@ const handleCreateProduct = async (req, res, next) => {
 
 const handleGetProducts = async (req, res, next) => {
   try {
-    const products = await Product.find({});
+    const products = await Product.find({}).populate('category');
 
     return res.status(200).json({
       message: `Returned all products successfully`,
