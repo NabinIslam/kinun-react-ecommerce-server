@@ -13,10 +13,7 @@ const clientUrl = process.env.CLIENT_URL || '';
 module.exports = {
   port,
   mongodbUri,
-  defaultImgPath,
   jwtActivationKey,
-  smtpUserName,
-  smtpPassword,
   clientUrl,
   jwtAccessKey,
   jwtResetPasswordKey,
