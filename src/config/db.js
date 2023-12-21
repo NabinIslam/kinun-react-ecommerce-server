@@ -1,10 +1,8 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
+const { mongodbUri } = require('../secret');
 
 const connectDB = async () => {
   try {
-    const mongodbUri = process.env.MONGODB_URI;
-
     await mongoose.connect(mongodbUri);
     console.log('Database connection established');
 
