@@ -14,7 +14,6 @@ const categorySchema = new Schema(
       required: [true, 'Category slug required'],
       lowercase: true,
       unique: true,
-      
     },
   },
   { timestamps: true }
