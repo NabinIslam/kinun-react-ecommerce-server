@@ -5,6 +5,7 @@ const categoryRouter = require('./routers/categoryRouter');
 const productRouter = require('./routers/productRouter');
 const brandRouter = require('./routers/brandRouter');
 const categorizedProductRouter = require('./routers/categorizedProductRouter');
+const contactRouter = require('./routers/contactRouter');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use('/api/categories', categoryRouter);
 app.use('/api/products', productRouter);
 app.use('/api/products/category', categorizedProductRouter);
 app.use('/api/brands', brandRouter);
+app.use('/api/contacts', contactRouter);
 
 app.get('/', (req, res) => res.send('Server is running fine! YaY!'));
 
