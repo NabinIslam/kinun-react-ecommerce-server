@@ -6,7 +6,7 @@ const productRouter = require('./routers/productRouter');
 const brandRouter = require('./routers/brandRouter');
 const categorizedProductRouter = require('./routers/categorizedProductRouter');
 const contactRouter = require('./routers/contactRouter');
-const userRouter = require('./routers/UserRouter');
+const userRouter = require('./routers/userRouter');
 
 const app = express();
 
