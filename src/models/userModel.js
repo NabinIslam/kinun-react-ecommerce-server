@@ -30,27 +30,12 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Password is required'],
       minlength: [6, 'Name must be at least 6 characters'],
-      set: v => bcrypt.hashSync(v, bcrypt.genSaltSync(10)),
     },
     image: {
-      type: Buffer,
-      contentType: String,
+      type: String,
       required: [true, 'Image is required'],
     },
-    address: {
-      type: String,
-      required: [true, 'Address is required'],
-      minlength: [3, 'Address must be at least 6 characters'],
-    },
-    phone: {
-      type: String,
-      required: [true, 'Phone number is required'],
-    },
     isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    isBanned: {
       type: Boolean,
       default: false,
     },
@@ -58,6 +43,6 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-const User = model('Users', userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;
