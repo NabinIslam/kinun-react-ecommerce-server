@@ -10,7 +10,13 @@ const handleCreateBrand = async (req, res, next) => {
       slug: slugify(name),
     });
 
+    if (!brand)
+      return res
+        .status(404)
+        .json({ success: false, message: `Could not create the brand` });
+
     return res.status(200).json({
+      success: true,
       message: `Brand created successfully`,
       brand,
     });
@@ -23,7 +29,13 @@ const handleGetBrands = async (req, res, next) => {
   try {
     const brands = await Brand.find({});
 
+    if (!brands)
+      return res
+        .status(404)
+        .json({ success: false, message: `Brands not found` });
+
     return res.status(200).json({
+      success: true,
       message: `Brands fetched successfully`,
       brands,
     });
@@ -40,10 +52,12 @@ const handleGetBrand = async (req, res, next) => {
 
     if (!brand)
       return res.status(404).json({
+        success: false,
         message: `Brand not found`,
       });
 
     return res.status(200).json({
+      success: true,
       message: `Brand fetched successfully`,
       brand,
     });
@@ -65,10 +79,12 @@ const handleUpdateBrand = async (req, res, next) => {
 
     if (!updatedBrand)
       return res.status(404).json({
-        message: `Brand not found`,
+        success: false,
+        message: `Could not update the brand`,
       });
 
     return res.status(200).json({
+      success: true,
       message: `Brand updated successfully`,
       updatedBrand,
     });
@@ -85,10 +101,12 @@ const handleDeleteBrand = async (req, res, next) => {
 
     if (!result)
       return res.status(404).json({
+        success: false,
         message: `Brand not found`,
       });
 
     return res.status(200).json({
+      success: true,
       message: `Brand deleted successfully`,
     });
   } catch (error) {

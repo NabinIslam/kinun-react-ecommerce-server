@@ -9,9 +9,10 @@ const handleCreateProduct = async (req, res, next) => {
     const productExists = await Product.exists({ name: name });
 
     if (productExists)
-      return res
-        .status(409)
-        .json({ message: `Product with this name already exist.` });
+      return res.status(409).json({
+        success: false,
+        message: `Product with this name already exist.`,
+      });
 
     const product = await Product.create({
       name,
@@ -24,6 +25,7 @@ const handleCreateProduct = async (req, res, next) => {
     });
 
     return res.status(200).json({
+      success: true,
       message: `Product created successfully`,
       product,
     });
@@ -36,7 +38,13 @@ const handleGetProducts = async (req, res, next) => {
   try {
     const products = await Product.find({}).populate('category');
 
+    if (!products)
+      return res
+        .status(404)
+        .json({ success: false, message: `Products not found` });
+
     return res.status(200).json({
+      success: true,
       message: `Returned all products successfully`,
       products,
     });
@@ -53,10 +61,12 @@ const handleGetProduct = async (req, res, next) => {
 
     if (!product)
       return res.status(404).json({
+        success: false,
         message: 'Product not found',
       });
 
     return res.status(200).json({
+      success: true,
       message: `Returned a single product successfully`,
       product,
     });
@@ -73,10 +83,12 @@ const handleDeleteProduct = async (req, res, next) => {
 
     if (!product)
       return res.status(404).json({
+        success: false,
         message: `Product not found`,
       });
 
     return res.status(200).json({
+      success: true,
       message: `Deleted a single product successfully`,
     });
   } catch (error) {
@@ -124,6 +136,7 @@ const handleUpdateProduct = async (req, res, next) => {
     );
 
     return res.status(200).json({
+      success: true,
       message: 'Product has updated successfully',
       payload: updatedProduct,
     });
@@ -138,7 +151,17 @@ const handleGetProductsByCategory = async (req, res, next) => {
 
     const category = await Category.findOne({ slug });
 
+    if (!category)
+      return res
+        .status(404)
+        .json({ success: false, message: `Category not found` });
+
     const products = await Product.find({ category }).populate('category');
+
+    if (!products)
+      return res
+        .status(404)
+        .json({ success: false, message: `Products not found` });
 
     return res.status(200).json({
       success: true,
