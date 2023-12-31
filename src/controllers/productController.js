@@ -1,5 +1,6 @@
 const slugify = require('slugify');
 const Product = require('../models/productModel');
+const Category = require('../models/categoryModel');
 
 const handleCreateProduct = async (req, res, next) => {
   try {
@@ -131,10 +132,29 @@ const handleUpdateProduct = async (req, res, next) => {
   }
 };
 
+const handleGetProductsByCategory = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+
+    const category = await Category.findOne({ slug });
+
+    const products = await Product.find({ category }).populate('category');
+
+    return res.status(200).json({
+      success: true,
+      message: `${slug} products returned successfully`,
+      products,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   handleCreateProduct,
   handleGetProducts,
   handleGetProduct,
   handleDeleteProduct,
   handleUpdateProduct,
+  handleGetProductsByCategory,
 };

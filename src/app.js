@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const categoryRouter = require('./routers/categoryRouter');
 const productRouter = require('./routers/productRouter');
 const brandRouter = require('./routers/brandRouter');
-const categorizedProductRouter = require('./routers/categorizedProductRouter');
 const contactRouter = require('./routers/contactRouter');
 const userRouter = require('./routers/userRouter');
 
@@ -16,7 +15,6 @@ app.use(cookieParser());
 
 app.use('/api/categories', categoryRouter);
 app.use('/api/products', productRouter);
-app.use('/api/products/category', categorizedProductRouter);
 app.use('/api/brands', brandRouter);
 app.use('/api/contacts', contactRouter);
 app.use('/api/users', userRouter);
