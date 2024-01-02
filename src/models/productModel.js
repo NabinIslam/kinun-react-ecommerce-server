@@ -44,8 +44,8 @@ const productSchema = new Schema(
     },
     status: {
       type: String,
-      required: [true, 'Product status is required'],
-    }
+      default: 'In Stock',
+    },
   },
   { timestamps: true }
 );
