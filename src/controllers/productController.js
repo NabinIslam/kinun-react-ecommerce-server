@@ -4,7 +4,15 @@ const Category = require('../models/categoryModel');
 
 const handleCreateProduct = async (req, res, next) => {
   try {
-    const { name, description, price, image, category, status } = req.body;
+    const {
+      name,
+      description,
+      shortDescription,
+      price,
+      image,
+      category,
+      status,
+    } = req.body;
 
     const productExists = await Product.exists({ name: name });
 
@@ -18,6 +26,7 @@ const handleCreateProduct = async (req, res, next) => {
       name,
       slug: slugify(name),
       description,
+      shortDescription,
       price,
       image,
       category,

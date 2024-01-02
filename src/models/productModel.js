@@ -23,6 +23,14 @@ const productSchema = new Schema(
       unique: true,
       minlength: [3, 'Product description must be at least 3 characters'],
     },
+    shortDescription: {
+      type: String,
+      required: [true, 'Product short description required'],
+      trim: true,
+      unique: true,
+      minlength: [3, 'Product short description must be at least 3 characters'],
+    },
+
     price: {
       type: Number,
       required: [true, 'Product price is required'],
