@@ -106,7 +106,7 @@ const handleDeleteCategory = async (req, res, next) => {
       });
 
     return res.status(200).json({
-      seccess: true,
+      success: true,
       message: `Category deleted successfully`,
     });
   } catch (error) {
