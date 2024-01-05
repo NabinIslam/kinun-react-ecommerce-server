@@ -44,13 +44,27 @@ const handleCreateProduct = async (req, res, next) => {
 };
 
 const handleGetProducts = async (req, res, next) => {
+  console.log(req.query);
+
   try {
-    const products = await Product.find({}).populate('category');
+    let products = await Product.find({}).populate('category');
 
     if (!products)
       return res
         .status(404)
         .json({ success: false, message: `Products not found` });
+
+    if (req.query.sort) {
+      products = await Product.find({})
+        .populate('category')
+        .sort(req.query.sort);
+
+      return res.status(200).json({
+        success: true,
+        message: `Returned all products by price successfully`,
+        products,
+      });
+    }
 
     return res.status(200).json({
       success: true,
