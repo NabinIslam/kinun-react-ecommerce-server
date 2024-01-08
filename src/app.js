@@ -6,6 +6,7 @@ const productRouter = require('./routers/productRouter');
 const brandRouter = require('./routers/brandRouter');
 const contactRouter = require('./routers/contactRouter');
 const userRouter = require('./routers/userRouter');
+const wishlistRouter = require('./routers/wishlistRouter');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use('/api/products', productRouter);
 app.use('/api/brands', brandRouter);
 app.use('/api/contacts', contactRouter);
 app.use('/api/users', userRouter);
+app.use('/api/wishlist', wishlistRouter);
 
 app.get('/', (req, res) => res.send(`Kinun server is running fine!`));
 
