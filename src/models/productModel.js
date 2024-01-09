@@ -50,6 +50,11 @@ const productSchema = new Schema(
       ref: 'Category',
       required: true,
     },
+    brand: {
+      type: Schema.Types.ObjectId,
+      ref: 'Brand',
+      required: true,
+    },
     status: {
       type: String,
       default: 'In Stock',
