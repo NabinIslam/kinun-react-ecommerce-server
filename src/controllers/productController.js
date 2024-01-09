@@ -11,6 +11,7 @@ const handleCreateProduct = async (req, res, next) => {
       price,
       image,
       category,
+      brand,
       status,
     } = req.body;
 
@@ -30,6 +31,7 @@ const handleCreateProduct = async (req, res, next) => {
       price,
       image,
       category,
+      brand,
       status,
     });
 
@@ -47,7 +49,9 @@ const handleGetProducts = async (req, res, next) => {
   console.log(req.query);
 
   try {
-    const products = await Product.find({}).populate('category');
+    const products = await Product.find({})
+      .populate('category')
+      .populate('brand');
 
     if (!products)
       return res
@@ -80,7 +84,9 @@ const handleGetProduct = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const product = await Product.findOne({ slug }).populate('category');
+    const product = await Product.findOne({ slug })
+      .populate('category')
+      .populate('brand');
 
     if (!product)
       return res.status(404).json({
@@ -179,7 +185,9 @@ const handleGetProductsByCategory = async (req, res, next) => {
         .status(404)
         .json({ success: false, message: `Category not found` });
 
-    const products = await Product.find({ category }).populate('category');
+    const products = await Product.find({ category })
+      .populate('category')
+      .populate('brand');
 
     if (!products)
       return res
@@ -189,6 +197,7 @@ const handleGetProductsByCategory = async (req, res, next) => {
     if (req.query.sort) {
       const products = await Product.find({ category })
         .populate('category')
+        .populate('brand')
         .sort(req.query.sort);
 
       return res.status(200).json({
