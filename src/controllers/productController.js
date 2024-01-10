@@ -46,10 +46,8 @@ const handleCreateProduct = async (req, res, next) => {
 };
 
 const handleGetProducts = async (req, res, next) => {
-  console.log(req.query);
-
   try {
-    const products = await Product.find({})
+    const products = await Product.find(req.query)
       .populate('category')
       .populate('brand');
 
@@ -61,6 +59,7 @@ const handleGetProducts = async (req, res, next) => {
     if (req.query.sort) {
       const products = await Product.find({})
         .populate('category')
+        .populate('brand')
         .sort(req.query.sort);
 
       return res.status(200).json({
