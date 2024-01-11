@@ -1,6 +1,7 @@
 const slugify = require('slugify');
 const Product = require('../models/productModel');
 const Category = require('../models/categoryModel');
+const Brand = require('../models/brandModel');
 
 const handleCreateProduct = async (req, res, next) => {
   try {
@@ -47,27 +48,38 @@ const handleCreateProduct = async (req, res, next) => {
 
 const handleGetProducts = async (req, res, next) => {
   try {
-    const products = await Product.find(req.query)
+    let sort = { createdAt: -1 };
+    let filter = {};
+
+    if (req.query.sort) {
+      sort = req.query.sort;
+    }
+
+    const brandName = req.query.brand;
+
+    if (brandName) {
+      const brand = await Brand.findOne({ slug: brandName });
+
+      filter = { brand: brand._id };
+    }
+
+    const categoryName = req.query.category;
+
+    if (categoryName) {
+      const category = await Category.findOne({ slug: categoryName });
+
+      filter = { ...filter, category: category._id };
+    }
+
+    const products = await Product.find(filter)
       .populate('category')
-      .populate('brand');
+      .populate('brand')
+      .sort(sort);
 
     if (!products)
       return res
         .status(404)
         .json({ success: false, message: `Products not found` });
-
-    if (req.query.sort) {
-      const products = await Product.find({})
-        .populate('category')
-        .populate('brand')
-        .sort(req.query.sort);
-
-      return res.status(200).json({
-        success: true,
-        message: `Returned all products by price successfully`,
-        products,
-      });
-    }
 
     return res.status(200).json({
       success: true,
@@ -175,6 +187,21 @@ const handleUpdateProduct = async (req, res, next) => {
 
 const handleGetProductsByCategory = async (req, res, next) => {
   try {
+    let sort = { createdAt: -1 };
+    let filter = {};
+
+    const brandName = req.query.brand;
+
+    if (brandName) {
+      const brand = await Brand.findOne({ slug: brandName });
+
+      filter = brand;
+    }
+
+    if (req.query.sort) {
+      sort = req.query.sort;
+    }
+
     const { slug } = req.params;
 
     const category = await Category.findOne({ slug });
@@ -186,25 +213,26 @@ const handleGetProductsByCategory = async (req, res, next) => {
 
     const products = await Product.find({ category })
       .populate('category')
-      .populate('brand');
+      .populate('brand')
+      .sort(sort);
 
     if (!products)
       return res
         .status(404)
         .json({ success: false, message: `Products not found` });
 
-    if (req.query.sort) {
-      const products = await Product.find({ category })
-        .populate('category')
-        .populate('brand')
-        .sort(req.query.sort);
+    // if (req.query.sort) {
+    //   const products = await Product.find({ category })
+    //     .populate('category')
+    //     .populate('brand')
+    //     .sort(req.query.sort);
 
-      return res.status(200).json({
-        success: true,
-        message: `${slug} products returned by price successfully`,
-        products,
-      });
-    }
+    //   return res.status(200).json({
+    //     success: true,
+    //     message: `${slug} products returned by price successfully`,
+    //     products,
+    //   });
+    // }
 
     return res.status(200).json({
       success: true,
