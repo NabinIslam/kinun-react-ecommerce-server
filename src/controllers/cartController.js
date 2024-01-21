@@ -104,9 +104,29 @@ const handleGetCart = async (req, res, next) => {
   }
 };
 
+const handleClearCart = async (req, res, next) => {
+  try {
+    const result = await Cart.deleteMany({ 'user.email': req.query.user });
+
+    if (!result)
+      return res.status(404).json({
+        success: false,
+        message: `Could not clear the cart`,
+      });
+
+    return res.status(200).json({
+      success: true,
+      message: `Cart cleared successfully`,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   handleAddToCart,
   handleRemoveFromCart,
   handleUpdateCart,
   handleGetCart,
+  handleClearCart,
 };
