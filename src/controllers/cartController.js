@@ -83,7 +83,10 @@ const handleGetCart = async (req, res, next) => {
       filter = { 'user.email': req.query.user };
     }
 
-    const cart = await Cart.find(filter).populate('product');
+    const cart = await Cart.find(filter).populate({
+      path: 'product',
+      populate: [{ path: 'category' }, { path: 'brand' }],
+    });
 
     if (!cart)
       return res.status(404).json({
