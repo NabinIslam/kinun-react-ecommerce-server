@@ -95,14 +95,14 @@ const handleUpdateCategory = async (req, res, next) => {
 
 const handleDeleteCategory = async (req, res, next) => {
   try {
-    const { slug } = req.params;
+    const { id } = req.params;
 
-    const result = await Category.findOneAndDelete({ slug });
+    const result = await Category.findOneAndDelete({ _id: id });
 
     if (!result)
       return res.status(404).json({
         success: false,
-        message: `Category not found`,
+        message: `Could not delete the category`,
       });
 
     return res.status(200).json({

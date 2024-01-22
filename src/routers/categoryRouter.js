@@ -13,6 +13,6 @@ categoryRouter.post('/', handleCreateCategory);
 categoryRouter.get('/', handleGetCategories);
 categoryRouter.get('/:slug', handleGetCategory);
 categoryRouter.put('/:slug', handleUpdateCategory);
-categoryRouter.delete('/:slug', handleDeleteCategory);
+categoryRouter.delete('/:id', handleDeleteCategory);
 
 module.exports = categoryRouter;
