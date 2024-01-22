@@ -14,6 +14,6 @@ brandRouter.post('/', handleCreateBrand);
 brandRouter.get('/', handleGetBrands);
 brandRouter.get('/:slug', handleGetBrand);
 brandRouter.put('/:slug', handleUpdateBrand);
-brandRouter.delete('/:slug', handleDeleteBrand);
+brandRouter.delete('/:id', handleDeleteBrand);
 
 module.exports = brandRouter;

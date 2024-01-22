@@ -95,14 +95,14 @@ const handleUpdateBrand = async (req, res, next) => {
 
 const handleDeleteBrand = async (req, res, next) => {
   try {
-    const { slug } = req.params;
+    const { id } = req.params;
 
-    const result = await Brand.findOneAndDelete({ slug });
+    const result = await Brand.findOneAndDelete({ _id: id });
 
     if (!result)
       return res.status(404).json({
         success: false,
-        message: `Brand not found`,
+        message: `Could not delete the brand`,
       });
 
     return res.status(200).json({
