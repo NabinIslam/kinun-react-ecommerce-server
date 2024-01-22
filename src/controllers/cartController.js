@@ -2,7 +2,10 @@ const Cart = require('../models/cartModel');
 
 const handleAddToCart = async (req, res, next) => {
   try {
-    const alreadyInCart = await Cart.findOne(req.body);
+    const alreadyInCart = await Cart.findOne({
+      'user.email': req.query.user,
+      product: req.body.product,
+    });
 
     if (alreadyInCart)
       return res
