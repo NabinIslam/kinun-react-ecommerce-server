@@ -117,14 +117,14 @@ const handleGetProduct = async (req, res, next) => {
 
 const handleDeleteProduct = async (req, res, next) => {
   try {
-    const { slug } = req.params;
+    const { id } = req.params;
 
-    const product = await Product.findOneAndDelete({ slug });
+    const product = await Product.findOneAndDelete({ _id: id });
 
     if (!product)
       return res.status(404).json({
         success: false,
-        message: `Product not found`,
+        message: `Could not delete the product`,
       });
 
     return res.status(200).json({

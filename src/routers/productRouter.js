@@ -13,7 +13,7 @@ const productRouter = express.Router();
 productRouter.post('/', handleCreateProduct);
 productRouter.get('/', handleGetProducts);
 productRouter.get('/:slug', handleGetProduct);
-productRouter.delete('/:slug', handleDeleteProduct);
+productRouter.delete('/:id', handleDeleteProduct);
 productRouter.put('/:slug', handleUpdateProduct);
 productRouter.get('/category/:slug', handleGetProductsByCategory);
 
