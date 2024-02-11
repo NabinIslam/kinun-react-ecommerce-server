@@ -138,47 +138,42 @@ const handleDeleteProduct = async (req, res, next) => {
 
 const handleUpdateProduct = async (req, res, next) => {
   try {
-    const { slug } = req.params;
-
-    const updateOptions = {
-      new: true,
-      runValidations: true,
-      context: 'query',
-    };
-
-    let updates = {};
-
-    const allowedFields = [
-      'name',
-      'description',
-      'price',
-      'sold',
-      'quantity',
-      'shipping',
-    ];
-
-    for (const key in req.body) {
-      if (allowedFields.includes(key)) {
-        updates[key] = req.body[key];
-      }
-      // else if (key === 'email') {
-      //   throw createError(400, 'Email can not be updated');
-      // }
-    }
-
-    const image = req.file;
-
-    const updatedProduct = await updateProduct(
-      slug,
-      updates,
+    const { id } = req.params;
+    const {
+      name,
+      description,
+      shortDescription,
+      price,
       image,
-      updateOptions
-    );
+      category,
+      brand,
+      status,
+    } = req.body;
+
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          name,
+          slug: slugify(name),
+          description,
+          shortDescription,
+          price,
+          image,
+          category,
+          brand,
+          status,
+        },
+      },
+      { new: true }
+    )
+      .populate('category')
+      .populate('brand');
 
     return res.status(200).json({
       success: true,
       message: 'Product has updated successfully',
-      payload: updatedProduct,
+      updatedProduct,
     });
   } catch (error) {
     next(error);

@@ -14,7 +14,7 @@ productRouter.post('/', handleCreateProduct);
 productRouter.get('/', handleGetProducts);
 productRouter.get('/:slug', handleGetProduct);
 productRouter.delete('/:id', handleDeleteProduct);
-productRouter.put('/:slug', handleUpdateProduct);
+productRouter.put('/update/:id', handleUpdateProduct);
 productRouter.get('/category/:slug', handleGetProductsByCategory);
 
 module.exports = productRouter;
