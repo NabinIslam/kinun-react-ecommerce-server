@@ -180,6 +180,30 @@ const handleUpdateProduct = async (req, res, next) => {
   }
 };
 
+const handleGetProductById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findOne({ _id: id })
+      .populate('category')
+      .populate('brand');
+
+    if (!product)
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found',
+      });
+
+    return res.status(200).json({
+      success: true,
+      message: `Returned a single product successfully`,
+      product,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const handleGetProductsByCategory = async (req, res, next) => {
   try {
     let sort = { createdAt: -1 };
@@ -246,4 +270,5 @@ module.exports = {
   handleDeleteProduct,
   handleUpdateProduct,
   handleGetProductsByCategory,
+  handleGetProductById,
 };
