@@ -7,6 +7,7 @@ const productRouter = require('./routers/productRouter');
 const brandRouter = require('./routers/brandRouter');
 const contactRouter = require('./routers/contactRouter');
 const userRouter = require('./routers/userRouter');
+const authRouter = require('./routers/authRouter');
 const wishlistRouter = require('./routers/wishlistRouter');
 const cartRouter = require('./routers/cartRouter');
 
@@ -21,6 +22,7 @@ app.use('/api/products', productRouter);
 app.use('/api/brands', brandRouter);
 app.use('/api/contacts', contactRouter);
 app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/wishlist', wishlistRouter);
 app.use('/api/cart', cartRouter);
 
