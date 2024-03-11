@@ -43,7 +43,7 @@ const handleSignIn = async (req, res, next) => {
         message: 'User not found',
       });
 
-    const validPassword = bcryptjs.compareSync(password, validUser.password);
+    const validPassword = await bcryptjs.compare(password, validUser.password);
 
     if (!validPassword)
       return res.status(401).json({
