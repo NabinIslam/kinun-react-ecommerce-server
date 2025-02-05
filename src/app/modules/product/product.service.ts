@@ -55,6 +55,32 @@ const createProduct = async (req: Request) => {
   return product;
 };
 
+const getAllProducts = async (query: {
+  search?: string;
+  category?: string;
+  brand?: string;
+}) => {
+  const { search, category, brand } = query;
+
+  const products = await prisma.product.findMany({
+    where: {
+      AND: [
+        search ? { name: { contains: search, mode: 'insensitive' } } : {},
+        category
+          ? { category: { name: { contains: category, mode: 'insensitive' } } }
+          : {},
+        brand
+          ? { brand: { name: { contains: brand, mode: 'insensitive' } } }
+          : {},
+      ],
+    },
+    include: { images: true, category: true, brand: true }, // Include category and brand details
+  });
+
+  return products;
+};
+
 export const productServices = {
   createProduct,
+  getAllProducts,
 };

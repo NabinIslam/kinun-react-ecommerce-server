@@ -12,5 +12,6 @@ router.post(
   FileUploadHelper.upload.array('images', 5),
   productControllers.createProduct,
 );
+router.get('/', productControllers.getAllProducts);
 
 export const productRoutes = router;

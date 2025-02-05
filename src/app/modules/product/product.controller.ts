@@ -17,6 +17,26 @@ const createProduct = catchAsync(
   },
 );
 
+const getAllProducts = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { search, category, brand } = req.query;
+
+    const result = await productServices.getAllProducts({
+      search: search as string,
+      category: category as string,
+      brand: brand as string,
+    });
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Products retrieved successfully!',
+      payload: result,
+    });
+  },
+);
+
 export const productControllers = {
   createProduct,
+  getAllProducts,
 };
