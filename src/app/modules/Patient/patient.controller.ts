@@ -3,15 +3,13 @@ import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import httpStatus from 'http-status';
 import pick from '../../../shared/pick';
-import { patientFilterableFields } from './patient.constants';
 import { PatientService } from './patient.services';
+import { patientFilterableFields } from './patient.constants';
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, patientFilterableFields);
   const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-
   const result = await PatientService.getAllFromDB(filters, options);
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -22,10 +20,8 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
-
   const { id } = req.params;
   const result = await PatientService.getByIdFromDB(id);
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -37,7 +33,6 @@ const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await PatientService.updateIntoDB(id, req.body);
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -56,8 +51,6 @@ const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-
-
 const softDelete = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await PatientService.softDelete(id);

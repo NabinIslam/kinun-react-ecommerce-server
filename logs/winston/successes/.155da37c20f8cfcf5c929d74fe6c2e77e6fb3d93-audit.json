@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\sinab\\Desktop\\kinun-react-ecommerce-server\\logs\\winston\\successes\\.155da37c20f8cfcf5c929d74fe6c2e77e6fb3d93-audit.json",
+    "files": [
+        {
+            "date": 1738739819040,
+            "name": "C:\\Users\\sinab\\Desktop\\kinun-react-ecommerce-server\\logs\\winston\\successes\\phu-2025-05-02-13-success.log",
+            "hash": "c93b105c365dd785358ec900821b14167fb0372e10658ddc8fcec3857f26a8d7"
+        }
+    ],
+    "hashType": "sha256"
+}

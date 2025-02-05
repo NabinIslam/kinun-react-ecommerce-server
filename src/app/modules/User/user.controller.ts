@@ -1,111 +1,102 @@
-import { Request, RequestHandler, Response } from "express";
-import { userService } from "./user.sevice";
-import catchAsync from "../../../shared/catchAsync";
-import sendResponse from "../../../shared/sendResponse";
-import httpStatus from "http-status";
-import pick from "../../../shared/pick";
-import { userFilterableFields } from "./user.constant";
-import { UserRole } from "@prisma/client";
-import { JwtPayload } from "jsonwebtoken";
-import { IAuthUser } from "../../interfaces/common";
+import { NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
+import catchAsync from '../../../shared/catchAsync';
+import sendResponse from '../../../shared/sendResponse';
+import { UserServices } from './user.services';
+import { userFilterableFields } from './user.constant';
+import pick from '../../../shared/pick';
 
-const createAdmin = catchAsync(async (req: Request, res: Response) => {
-
-    const result = await userService.createAdmin(req);
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Admin Created successfuly!",
-        data: result
-    })
+const createDoctor = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  //const { doctor, ...userData } = req.body;
+  const result = await UserServices.createDoctor(req);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Doctor created successfully!',
+    data: result,
+  });
 });
 
-const createDoctor = catchAsync(async (req: Request, res: Response) => {
 
-    const result = await userService.createDoctor(req);
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Doctor Created successfuly!",
-        data: result
-    })
+const createAdmin = catchAsync(async (req: Request, res: Response) => {
+  //const { admin, ...userData } = req.body;
+  const result = await UserServices.createAdmin(req);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Admin created successfully!',
+    data: result,
+  });
 });
 
 const createPatient = catchAsync(async (req: Request, res: Response) => {
-
-    const result = await userService.createPatient(req);
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Patient Created successfuly!",
-        data: result
-    })
-});
-
-const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-    // console.log(req.query)
-    const filters = pick(req.query, userFilterableFields);
-    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
-
-    const result = await userService.getAllFromDB(filters, options)
-
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Users data fetched!",
-        meta: result.meta,
-        data: result.data
-    })
+  //const { patient, ...userData } = req.body;
+  const result = await UserServices.createPatient(req);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Patient created successfully!',
+    data: result,
+  });
 });
 
 const changeProfileStatus = catchAsync(async (req: Request, res: Response) => {
-
-    const { id } = req.params;
-    const result = await userService.changeProfileStatus(id, req.body)
-
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Users profile status changed!",
-        data: result
-    })
+  const { id } = req.params;
+  const result = await UserServices.changeProfileStatus(id, req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User status updated successfully!',
+    data: result,
+  });
 });
 
 
-const getMyProfile = catchAsync(async (req: Request & { user?: IAuthUser }, res: Response) => {
-
-    const user = req.user;
-
-    const result = await userService.getMyProfile(user as IAuthUser);
-
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "My profile data fetched!",
-        data: result
-    })
+const getAllUser = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, userFilterableFields);
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+  const result = await UserServices.getAllUser(filters, options);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users retrieval successfully',
+    meta: result.meta,
+    data: result.data,
+  });
 });
 
-const updateMyProfie = catchAsync(async (req: Request & { user?: IAuthUser }, res: Response) => {
+const getMyProfile = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
 
-    const user = req.user;
+  const result = await UserServices.getMyProfile(user);
 
-    const result = await userService.updateMyProfie(user as IAuthUser, req);
-
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "My profile updated!",
-        data: result
-    })
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile data fetched!',
+    data: result
+  });
 });
 
-export const userController = {
-    createAdmin,
-    createDoctor,
-    createPatient,
-    getAllFromDB,
-    changeProfileStatus,
-    getMyProfile,
-    updateMyProfie
-}
+const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+
+  const result = await UserServices.updateMyProfile(user, req);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile data fetched!',
+    data: result
+  });
+});
+
+export const UserController = {
+  createDoctor,
+  createAdmin,
+  createPatient,
+  changeProfileStatus,
+  getAllUser,
+  getMyProfile,
+  updateMyProfile
+};

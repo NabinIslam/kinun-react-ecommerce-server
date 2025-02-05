@@ -1,0 +1,48 @@
+Wed Feb 05 2025 13:17:0 } [PH] error: 
+Invalid `prisma.appointment.findMany()` invocation:
+
+
+error: Environment variable not found: DATABASE_URL.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "postgresql"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+Wed Feb 05 2025 13:19:0 } [PH] error: 
+Invalid `prisma.appointment.findMany()` invocation:
+
+
+error: Environment variable not found: DATABASE_URL.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "postgresql"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+Wed Feb 05 2025 13:20:0 } [PH] error: 
+Invalid `prisma.appointment.findMany()` invocation:
+
+
+error: Environment variable not found: DATABASE_URL.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "postgresql"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+Wed Feb 05 2025 13:21:0 } [PH] error: 
+Invalid `prisma.appointment.findMany()` invocation:
+
+
+error: Environment variable not found: DATABASE_URL.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "postgresql"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1

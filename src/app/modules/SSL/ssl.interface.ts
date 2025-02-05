@@ -1,8 +1,6 @@
-export type IPaymentData = {
+export interface PaymentInfo {
     amount: number;
     transactionId: string;
-    name: string;
-    email: string;
-    address: string | null;
-    phoneNumber: string | null;
+    customerName: string;
+    customerEmail: string;
 }

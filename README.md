@@ -1,46 +1,77 @@
-# PH HealthCare Server
+# **Health Care Server**
 
-Welcome to the backend repository for PH HealthCare, a tutorial project developed as part of the "Level 2 Web Development Course" offered by Programming Hero.
+Welcome to the **Health Care Server** project! This repository contains the server-side code for our Health Care application. This README file provides guidelines on how to build and contribute to the project as a team. Please make sure to follow these instructions to maintain a consistent and efficient development process.
 
-This repository contains the backend codebase responsible for handling server-side logic, database management, and communication between different system components.
+## **Getting Started**
 
-<!-- ## Table of Contents
-- [PH HealthCare Backend](#ph-healthcare-backend)
-  - [Table of Contents](#table-of-contents)
-  - [Technologies Used](#technologies-used)
-  - [Features](#features)
-  - [Installation and Setup](#installation-and-setup)
-  - [Usage](#usage)
-  - [API Endpoints](#api-endpoints)
-  - [Contributing](#contributing)
-  - [License](#license) -->
+1. **Clone the Repository:**
+    
+    ```bash
+    git clone https://github.com/Programming-Hero-Next-Level-Development/health-care-server.git
+    ```
+    
+2. **Navigate to the Project Directory:**
+    
+    ```bash
+    cd health-care-server
+    ```
+    
+3. Please update the filename from `.env.example` to `.env`
+4. **Install Dependencies:**
+    
+    ```bash
+    yarn install
+    ```
+    
+5. **Start the Server:**
+    
+    ```bash
+    yarn dev
+    ```
+    
+    The server will be running at **`http://localhost:3000`** .
+    
 
-<!-- ## Technologies Used
-- **Node.js**: Runtime environment for executing JavaScript code.
-- **Express.js**: Web application framework for building APIs and handling HTTP requests.
-- **Prisma**: ORM (Object-Relational Mapping) tool for database management.
-- **PostgreSQL**: Relational database management system.
-- **WEB RTC (Agora.io)**: Third-party service for real-time communication between users.
-- **JWT**: JSON Web Tokens for secure authentication and authorization.
-- **bcrypt**: Library for hashing passwords.
-- **nodemailer**: Library for sending email notifications. -->
+## **Contributing Guidelines**
 
-<!-- ## Features
-- **User Authentication and Authorization**: Secure authentication using JWT tokens.
-- **User Management**: CRUD operations for managing user accounts (Admin, Doctor, Patient).
-- **Appointment Management**: Create, update, and delete appointments.
-- **Real-time Communication**: Integration with WEB RTC for real-time communication between doctors and patients.
-- **Prescription Management**: Create, update, and delete prescriptions.
-- **Email Notifications**: Send email notifications for appointment confirmations, invoices, and prescription delivery. -->
+To contribute to the project, follow these guidelines:
 
-## Installation and Setup
-1. Clone this repository: `git clone <repository_url>`
-2. Install dependencies: `npm install`
-3. Set up the environment variables by creating a `.env` file and filling in the required variables based on the provided `.env.example` file.
-4. Run the database migrations: `npx prisma migrate dev`
-5. Start the server: `npm run dev`
+1. **Create a Feature Branch:**
+Before starting work on a new feature, create a feature branch:
+    
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+    
+2. **Write Code:**
+Implement the feature or fix the bug on your feature branch.
+3. **Commit Changes:**
+Commit your changes with a meaningful commit message:
+    
+    ```bash
+    git commit -m "Add your commit message here"
+    ```
+    
+4. **Push Changes:**
+Push your changes to your feature branch:
+    
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+    
+5. **Create a Pull Request (PR):**
+Create a pull request from your feature branch to the **`development`** branch on GitHub. Ensure the PR title and description are descriptive.
+6. **Code Review:**
+Your code will be reviewed by other team members. Address any feedback and make necessary changes.
+
+## **Additional Notes**
+
+- **Main Branch:**
+The **`main`** branch is reserved for stable releases. Do not directly push to the main branch.
+- **Issues and Bug Tracking:**
+Use the GitHub Issues tab to report bugs, suggest features, or discuss enhancements.
+- **Coding Standards:**
+Follow the coding standards and conventions established by the team. Ensure your code is well-documented.
 
 
-### API Documentation: https://documenter.getpostman.com/view/26694209/2sA2xjyWRv
-
-
+#### Postman API Documentation: https://documenter.getpostman.com/view/26694209/2s9YynmjXH

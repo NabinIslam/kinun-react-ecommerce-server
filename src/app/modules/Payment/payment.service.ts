@@ -1,9 +1,11 @@
-import prisma from '../../../shared/prisma';
-import { SSLService } from '../SSL/ssl.service';
-import { PaymentStatus } from '@prisma/client';
+import httpStatus from "http-status";
+import ApiError from "../../../errors/ApiError";
+import prisma from "../../../shared/prisma";
+import { sslServices } from "../ssl/ssl.service"
+import { PaymentStatus } from "@prisma/client";
 
-const initPayment = async (appointmentId: string) => {
-    const paymentData = await prisma.payment.findFirstOrThrow({
+const initPayment = async (data: any, appointmentId: string) => {
+    const paymentData = await prisma.payment.findFirst({
         where: {
             appointmentId
         },
@@ -16,56 +18,56 @@ const initPayment = async (appointmentId: string) => {
         }
     });
 
-    const initPaymentData = {
-        amount: paymentData.amount,
-        transactionId: paymentData.transactionId,
-        name: paymentData.appointment.patient.name,
-        email: paymentData.appointment.patient.email,
-        address: paymentData.appointment.patient.address,
-        phoneNumber: paymentData.appointment.patient.contactNumber
+    if (!paymentData) {
+        throw new ApiError(httpStatus.BAD_REQUEST, "Payment information not found!")
+    }
+    if (paymentData.status === PaymentStatus.PAID) {
+        throw new ApiError(httpStatus.BAD_REQUEST, "You already pay for the appointment!")
     }
 
-    const result = await SSLService.initPayment(initPaymentData);
+    const paymentSession = await sslServices.initPayment({
+        amount: paymentData.amount,
+        transactionId: paymentData.transactionId,
+        customerName: paymentData.appointment.patient.name,
+        customerEmail: paymentData.appointment.patient.email
+    })
     return {
-        paymentUrl: result.GatewayPageURL
+        paymentUrl: paymentSession.GatewayPageURL
     };
-
 };
 
-// ssl commerz ipn listener query
-// amount=1150.00&bank_tran_id=151114130739MqCBNx5&card_brand=VISA&card_issuer=BRAC+BANK%2C+LTD.&card_issuer_country=Bangladesh&card_issuer_country_code=BD&card_no=432149XXXXXX0667&card_type=VISA-Brac+bank¤cy=BDT&status=VALID&store_amount=1104.00&store_id=progr6606bdd704623&tran_date=2015-11-14+13%3A07%3A12&tran_id=5646dd9d4b484&val_id=151114130742Bj94IBUk4uE5GRj&verify_sign=490d86b8ac5faa016f695b60972a7fac&verify_key=amount%2Cbank_tran_id%2Ccard_brand%2Ccard_issuer%2Ccard_issuer_country%2Ccard_issuer_country_code%2Ccard_no%2Ccard_type%2Ccurrency%2Cstatus%2Cstore_amount%2Cstore_id%2Ctran_date%2Ctran_id%2Cval_id
-
-const validatePayment = async (payload: any) => {
-    // if (!payload || !payload.status || !(payload.status === 'VALID')) {
+const validate = async (payload: any) => {
+    // if (!payload || !payload?.status || payload?.status !== 'VALID') {
     //     return {
-    //         message: "Invalid Payment!"
+    //         massage: 'Invalid Payment!'
     //     }
     // }
+    // const result = await sslServices.validate(payload);
 
-    // const response = await SSLService.validatePayment(payload);
-
-    // if (response?.status !== 'VALID') {
+    // if (result?.status !== 'VALID') {
     //     return {
-    //         message: "Payment Failed!"
+    //         massage: 'Payment failed'
     //     }
     // }
+    // const { tran_id } = result;
 
-    const response = payload;
+    // Uncomment when validate in locally
+    const { tran_id } = payload;
 
-    await prisma.$transaction(async (tx) => {
-        const updatedPaymentData = await tx.payment.update({
+    await prisma.$transaction(async (transactionClient) => {
+        const paymentData = await transactionClient.payment.update({
             where: {
-                transactionId: response.tran_id
+                transactionId: tran_id
             },
             data: {
                 status: PaymentStatus.PAID,
-                paymentGatewayData: response
+                paymentGatewayData: payload
             }
         });
 
-        await tx.appointment.update({
+        await transactionClient.appointment.update({
             where: {
-                id: updatedPaymentData.appointmentId
+                id: paymentData.appointmentId
             },
             data: {
                 paymentStatus: PaymentStatus.PAID
@@ -74,12 +76,11 @@ const validatePayment = async (payload: any) => {
     });
 
     return {
-        message: "Payment success!"
-    }
-
+        massage: 'Payment Success'
+    };
 }
 
 export const PaymentService = {
     initPayment,
-    validatePayment
+    validate
 }

@@ -1,40 +1,35 @@
-import express from 'express'
+import express from 'express';
+import validateRequest from '../../middlewares/validateRequest';
 import { AppointmentController } from './appointment.controller';
 import auth from '../../middlewares/auth';
-import { UserRole } from '@prisma/client';
-import validateRequest from '../../middlewares/validateRequest';
+import { ENUM_USER_ROLE } from '../../../enums/user';
 import { AppointmentValidation } from './appointment.validation';
+
 
 const router = express.Router();
 
-/**
- * ENDPOINT: /appointment/
- * 
- * Get all appointment with filtering
- * Only accessable for Admin & Super Admin
- */
 router.get(
     '/',
-    auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+    auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
     AppointmentController.getAllFromDB
 );
 
 router.get(
-    '/my-appointment',
-    auth(UserRole.PATIENT, UserRole.DOCTOR),
+    '/my-appointments',
+    auth(ENUM_USER_ROLE.PATIENT, ENUM_USER_ROLE.DOCTOR),
     AppointmentController.getMyAppointment
-)
+);
 
 router.post(
     '/',
-    auth(UserRole.PATIENT),
+    auth(ENUM_USER_ROLE.PATIENT),
     validateRequest(AppointmentValidation.createAppointment),
     AppointmentController.createAppointment
 );
 
 router.patch(
     '/status/:id',
-    auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR),
+    auth(ENUM_USER_ROLE.DOCTOR, ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
     AppointmentController.changeAppointmentStatus
 );
 

@@ -1,70 +1,80 @@
 import express from 'express';
-import { userRoutes } from '../modules/User/user.routes';
-import { AdminRoutes } from '../modules/Admin/admin.routes';
-import { AuthRoutes } from '../modules/Auth/auth.routes';
-import { SpecialtiesRoutes } from '../modules/Specialties/specialties.routes';
-import { DoctorRoutes } from '../modules/Doctor/doctor.routes';
-import { PatientRoutes } from '../modules/Patient/patient.route';
-import { ScheduleRoutes } from '../modules/Schedule/schedule.routes';
-import { DoctorScheduleRoutes } from '../modules/DoctorSchedule/doctorSchedule.routes';
-import { AppointmentRoutes } from '../modules/Appointment/appointment.routes';
-import { PaymentRoutes } from '../modules/Payment/payment.routes';
-import { PrescriptionRoutes } from '../modules/Prescription/prescription.routes';
-import { ReviewRoutes } from '../modules/Review/review.routes';
+import { DoctorRoutes } from '../modules/doctor/doctor.route';
+import { SpecialtiesRoutes } from '../modules/specialties/specialties.route';
+import { userRoutes } from '../modules/user/user.route';
+import { AuthRoutes } from '../modules/auth/auth.routes';
+import { PatientRoutes } from '../modules/patient/patient.route';
+import { AdminRoutes } from '../modules/admin/admin.route';
+import { AppointmentRoutes } from '../modules/appointment/appointment.routes';
+import { ScheduleRoutes } from '../modules/schedule/schedule.route';
+import { DoctorScheduleRoutes } from '../modules/doctorSchedule/doctorSchedule.route';
+import { paymentRoutes } from '../modules/payment/payment.routes';
+import { PrescriptionsRoutes } from '../modules/prescription/prescription.route';
+import { ReviewRoutes } from '../modules/review/review.route';
+import { MetaRoutes } from '../modules/meta/meta.routes';
+import { MeilisearchRoutes } from '../modules/meilisearch/meilisearch.route';
 
 const router = express.Router();
 
 const moduleRoutes = [
-    {
-        path: '/user',
-        route: userRoutes
-    },
-    {
-        path: '/admin',
-        route: AdminRoutes
-    },
-    {
-        path: '/auth',
-        route: AuthRoutes
-    },
-    {
-        path: '/specialties',
-        route: SpecialtiesRoutes
-    },
-    {
-        path: '/doctor',
-        route: DoctorRoutes
-    },
-    {
-        path: '/patient',
-        route: PatientRoutes
-    },
-    {
-        path: '/schedule',
-        route: ScheduleRoutes
-    },
-    {
-        path: '/doctor-schedule',
-        route: DoctorScheduleRoutes
-    },
-    {
-        path: '/appointment',
-        route: AppointmentRoutes
-    },
-    {
-        path: '/payment',
-        route: PaymentRoutes
-    },
-    {
-        path: '/prescription',
-        route: PrescriptionRoutes
-    },
-    {
-        path: '/review',
-        route: ReviewRoutes
-    }
+  // ... routes
+  {
+    path: '/auth',
+    route: AuthRoutes,
+  },
+  {
+    path: '/user',
+    route: userRoutes,
+  },
+  {
+    path: '/doctor',
+    route: DoctorRoutes,
+  },
+  {
+    path: '/admin',
+    route: AdminRoutes,
+  },
+  {
+    path: '/patient',
+    route: PatientRoutes,
+  },
+  {
+    path: '/specialties',
+    route: SpecialtiesRoutes,
+  },
+  {
+    path: '/appointment',
+    route: AppointmentRoutes,
+  },
+  {
+    path: '/schedule',
+    route: ScheduleRoutes,
+  },
+  {
+    path: '/doctor-schedule',
+    route: DoctorScheduleRoutes,
+  },
+  {
+    path: '/payment',
+    route: paymentRoutes,
+  },
+  {
+    path: '/prescription',
+    route: PrescriptionsRoutes,
+  },
+  {
+    path: '/review',
+    route: ReviewRoutes,
+  },
+  {
+    path: '/metadata',
+    route: MetaRoutes,
+  },
+  {
+    path: '/search-doctors',
+    route: MeilisearchRoutes,
+  },
 ];
 
-moduleRoutes.forEach(route => router.use(route.path, route.route))
-
+moduleRoutes.forEach(route => router.use(route.path, route.route));
 export default router;

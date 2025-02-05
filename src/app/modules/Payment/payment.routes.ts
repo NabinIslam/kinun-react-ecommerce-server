@@ -1,16 +1,19 @@
 import express from 'express';
 import { PaymentController } from './payment.controller';
+import auth from '../../middlewares/auth';
+import { ENUM_USER_ROLE } from '../../../enums/user';
 
 const router = express.Router();
 
-router.get(
-    '/ipn',
-    PaymentController.validatePayment
-)
+router.post('/ipn', PaymentController.validate)
 
 router.post(
-    '/init-payment/:appointmentId',
+    '/init/:appointmentId',
+    auth(ENUM_USER_ROLE.PATIENT),
     PaymentController.initPayment
-)
+);
 
-export const PaymentRoutes = router;
+
+
+export const paymentRoutes = router;
+
