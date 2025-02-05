@@ -15,7 +15,7 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
     success: true,
     message: 'Admin retrieval successfully',
     meta: result.meta,
-    data: result.data,
+    payload: result.data,
   });
 });
 
@@ -26,7 +26,7 @@ const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Admin retrieval successfully',
-    data: result,
+    payload: result,
   });
 });
 
@@ -37,7 +37,7 @@ const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Admin updated successfully',
-    data: result,
+    payload: result,
   });
 });
 
@@ -48,7 +48,7 @@ const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Admin deleted successfully',
-    data: result,
+    payload: result,
   });
 });
 const softDelete = catchAsync(async (req: Request, res: Response) => {
@@ -58,7 +58,7 @@ const softDelete = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Admin soft deleted successfully',
-    data: result,
+    payload: result,
   });
 });
 

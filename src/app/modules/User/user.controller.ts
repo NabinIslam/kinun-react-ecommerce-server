@@ -6,17 +6,18 @@ import { UserServices } from './user.services';
 import { userFilterableFields } from './user.constant';
 import pick from '../../../shared/pick';
 
-const createDoctor = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  //const { doctor, ...userData } = req.body;
-  const result = await UserServices.createDoctor(req);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Doctor created successfully!',
-    data: result,
-  });
-});
-
+const createDoctor = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    //const { doctor, ...userData } = req.body;
+    const result = await UserServices.createDoctor(req);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Doctor created successfully!',
+      payload: result,
+    });
+  },
+);
 
 const createAdmin = catchAsync(async (req: Request, res: Response) => {
   //const { admin, ...userData } = req.body;
@@ -25,7 +26,7 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Admin created successfully!',
-    data: result,
+    payload: result,
   });
 });
 
@@ -36,7 +37,7 @@ const createPatient = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Patient created successfully!',
-    data: result,
+    payload: result,
   });
 });
 
@@ -47,10 +48,9 @@ const changeProfileStatus = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User status updated successfully!',
-    data: result,
+    payload: result,
   });
 });
-
 
 const getAllUser = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, userFilterableFields);
@@ -61,7 +61,7 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
     success: true,
     message: 'Users retrieval successfully',
     meta: result.meta,
-    data: result.data,
+    payload: result.data,
   });
 });
 
@@ -74,7 +74,7 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Profile data fetched!',
-    data: result
+    payload: result,
   });
 });
 
@@ -87,7 +87,7 @@ const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Profile data fetched!',
-    data: result
+    payload: result,
   });
 });
 
@@ -98,5 +98,5 @@ export const UserController = {
   changeProfileStatus,
   getAllUser,
   getMyProfile,
-  updateMyProfile
+  updateMyProfile,
 };

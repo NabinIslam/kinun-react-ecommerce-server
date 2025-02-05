@@ -18,7 +18,7 @@ const getDoctorsFromMeili = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Doctor Retrieved Successfully',
-    data: result,
+    payload: result,
   });
 });
 

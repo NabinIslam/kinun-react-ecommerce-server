@@ -9,7 +9,7 @@ type IApiReponse<T> = {
     limit: number;
     total: number;
   };
-  data?: T | null;
+  payload?: T | null;
 };
 
 const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
@@ -18,7 +18,7 @@ const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
     success: data.success,
     message: data.message || null,
     meta: data.meta || null || undefined,
-    data: data.data || null || undefined,
+    payload: data.payload || null || undefined,
   };
 
   res.status(data.statusCode).json(responseData);

@@ -20,7 +20,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: 'User logged in successfully !',
-    data: {
+    payload: {
       accessToken: result.accessToken,
       needPasswordChange: result.needPasswordChange,
     },
@@ -44,7 +44,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: 'User logged in successfully !',
-    data: result,
+    payload: result,
   });
 });
 
@@ -58,7 +58,7 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: 'Password changed successfully!',
-    data: {
+    payload: {
       status: 200,
       message: 'Password changed successfully!',
     },
@@ -72,7 +72,7 @@ const forgotPass = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: 'Check your email!',
-    data: {
+    payload: {
       status: 200,
       message: 'Check your email for reset link!',
     },
@@ -87,7 +87,7 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: 'Account recovered!',
-    data: {
+    payload: {
       status: 200,
       message: 'Password Reset Successfully',
     },
