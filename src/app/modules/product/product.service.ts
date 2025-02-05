@@ -7,17 +7,18 @@ import { FileUploadHelper } from '../../../helpers/fileUploadHelper';
 import { ICloudinaryResponse } from '../../../interfaces/file';
 
 const createProduct = async (req: Request) => {
-  const { name, description, short_description, price, categoryId, brandId } =
-    req.body;
-
   const alreadyExists = await prisma.product.findFirst({
     where: {
-      name,
+      name: req.body.name,
     },
   });
 
   if (alreadyExists)
     throw new ApiError(httpStatus.CONFLICT, 'Product already exists');
+
+  // Ensure files are uploaded
+  if (!req.files || (req.files as Express.Multer.File[]).length === 0)
+    throw new ApiError(400, 'At least one image is required');
 
   const uploadedFiles = req.files as Express.Multer.File[];
 
@@ -27,25 +28,25 @@ const createProduct = async (req: Request) => {
   );
 
   // Wait for all images to be uploaded
-  const uploadedImages: (ICloudinaryResponse | undefined)[] =
-    await Promise.all(uploadPromises);
+  const uploadedImages = await Promise.all(uploadPromises);
 
-  // Extract image URLs
-  const imageUrls = uploadedImages.map(image => ({
-    url: image?.secure_url, // Cloudinary returns secure_url
-  }));
+  // Filter out failed uploads (undefined URLs)
+  const imageUrls = uploadedImages
+    .filter((image): image is ICloudinaryResponse => image !== undefined)
+    .map(image => ({
+      url: image.secure_url, // Ensure only valid strings
+    }));
+
+  // Check if there are valid images before saving
+  if (imageUrls.length === 0) throw new ApiError(400, 'Image upload failed');
 
   // Create the product in the database
   const product = await prisma.product.create({
     data: {
-      name,
-      slug: slugify(name, { lower: true }),
-      description,
-      short_description,
-      price: parseFloat(price),
+      ...req.body,
+      slug: slugify(req.body.name, { lower: true }),
+      price: parseFloat(req.body.price),
       images: { create: imageUrls }, // Save images in relation
-      categoryId,
-      brandId,
     },
 
     include: { images: true, category: true, brand: true },

@@ -51,7 +51,7 @@ model Product {
   id                String         @id @default(uuid())
   name              String
   slug              String         @unique
-  description       String?
+  description       String
   short_description String
   price             Float
   images            ProductImage[]
