@@ -1,36 +1,36 @@
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../../../shared/catchAsync';
-import { categoryServices } from './category.service';
 import sendResponse from '../../../shared/sendResponse';
 import httpStatus from 'http-status';
+import { brandServices } from './brand.service';
 
-const createCategory = catchAsync(
+const createBrand = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await categoryServices.createCategory(req.body);
+    const result = await brandServices.createBrand(req.body);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Category created successfully!',
+      message: 'Brand created successfully!',
       payload: result,
     });
   },
 );
 
-const getAllCategories = catchAsync(
+const getAllBrands = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await categoryServices.getAllCategories();
+    const result = await brandServices.getAllBrands();
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Categories retrieved successfully',
+      message: 'Brands retrieved successfully',
       payload: result,
     });
   },
 );
 
-export const categoryControllers = {
-  createCategory,
-  getAllCategories,
+export const brandController = {
+  createBrand,
+  getAllBrands,
 };

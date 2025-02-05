@@ -5,6 +5,8 @@ import { AdminRoutes } from '../modules/admin/admin.route';
 import { MetaRoutes } from '../modules/meta/meta.routes';
 import { MeilisearchRoutes } from '../modules/meilisearch/meilisearch.route';
 import { categoryRoutes } from '../modules/category/category.route';
+import { brandRoutes } from '../modules/brand/brand.route';
+import { productRoutes } from '../modules/product/product.route';
 
 const router = express.Router();
 
@@ -33,6 +35,14 @@ const moduleRoutes = [
   {
     path: '/categories',
     route: categoryRoutes,
+  },
+  {
+    path: '/brands',
+    route: brandRoutes,
+  },
+  {
+    path: '/products',
+    route: productRoutes,
   },
 ];
 

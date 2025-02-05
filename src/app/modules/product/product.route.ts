@@ -9,8 +9,8 @@ const router = express.Router();
 
 router.post(
   '/',
-  FileUploadHelper.upload.single('file'),
+  FileUploadHelper.upload.array('images', 5),
   productControllers.createProduct,
 );
 
-export const userRoutes = router;
+export const productRoutes = router;

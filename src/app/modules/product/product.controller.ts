@@ -6,7 +6,7 @@ import httpStatus from 'http-status';
 
 const createProduct = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await productServices.createProduct(req.body);
+    const result = await productServices.createProduct(req);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,

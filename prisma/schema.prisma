@@ -48,14 +48,14 @@ model Brand {
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  name        String
-  slug        String   @unique
-  description String?
-  price       Float
-  isDeleted   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                String         @id @default(uuid())
+  name              String
+  slug              String         @unique
+  description       String?
+  short_description String
+  price             Float
+  images            ProductImage[]
+  isDeleted         Boolean        @default(false)
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
@@ -63,7 +63,8 @@ model Product {
   brandId String
   brand   Brand  @relation(fields: [brandId], references: [id])
 
-  images ProductImage[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("products")
 }
